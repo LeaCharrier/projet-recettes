@@ -1,44 +1,90 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# ARCHITECTURE
 
-## Available Scripts
+## Components
 
-In the project directory, you can run:
+- /Blocks
 
-### `yarn start`
+Contiendra tout tes dump components, par exemple une modal, une header, footer
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- /Fields
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Contiendra tout les composants lié à la gestion des formulaires par exemple un TextField, un TextArea, un bouton etc etc
 
-### `yarn test`
+- /Forms
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Contiendra tout les composants de formulaire qui eux seront connecté a redux-form et dedans tu pourra importer tes composants du dossier /Fields
 
-### `yarn build`
+- /Pages
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Contiendra tes pages qui seront connecté a ton router, ou pas forcément ça dépend comment tu t'organise et ce que tu veux faire, mais ça reste le mieux en terme d'organisation je pense.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Configs
 
-### `yarn eject`
+Tout tes fichiers de configurations par exemple le fichier qui permet la génération automatique des routes depuis un tableau d'objet, mais ça peut être autre chose, la gestion d'un menu par exemple...
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Helpers
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Tu sait c'est quoi ça déjà
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Store
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Alors ici c'est un peu particulier de ce que tu as eu l'habitude de connaitre
 
-## Learn More
+Ici on va créer un dossier par exemple :
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- /store/user
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Celui aura 4 fichiers :
+
+- actions.ts
+- reducers.ts
+- types.ts
+- index.ts
+
+le fichier index.ts servira juste à faire un export des trois précédents fichiers.
+
+Ensuite tu connait comment on fait, simplement que maintenant on sépare les choses pour plus de clarté
+
+Ensuite, ton fichier reducers.ts, devra être importé dans le fichier : `/reducers/index.ts`
+
+car ce fichier contiens tout les reducers de ton app, donc ton state global de ton app.
+
+## Reducers
+
+celui n'a qu'un fichier c'est normal ce fichier sert juste à importer tes reducers depuis ton dossier /store et à avoir ton store global
+
+
+# ARCHITECTURE D'UN COMPOSANT
+
+Dedans généralement tu trouvera 2 ou 3 fichiers, index.tsx qui est ton composant React, styles.scss ton CSS et un fichier types.ts
+
+Celui est assez particulier, il contiendra tes interfaces de typage ou des enums (un enums est un simple objet), une interface c'est un objet qui prend clef: valeur (valeur étant un type, si tu connait pas le type a l'avance utilise any et tu typera après)
+
+`export type Props = xxx`
+
+Une variable qui contiendra une ou plusieurs interface, tes props qui vienne de redux (mapStateToProps, mapDispatchProps), tes props local à ton composant (this.props)
+
+Pour ces trois choses, on sépare en plusieurs interface :
+
+Dans le cas ou c'est des props qui sont passé à ton composant alors on dira que c'est :
+
+``` export interface OwnProps {} ```
+
+Quand ça viens du mapStateToProps :
+
+``` export interface StateProps {} ```
+
+Quand ça viens du mapDispatchToProps :
+
+``` export interface DispatchProps {} ```
+
+C'est trois interface peuvent ensuite être utilisé comme ça :
+
+`export type Props = OwnProps | StateProps | DispatchProps` (un pipe est égale au double pipe en JS)
+
+Après d'autre déclaration de type peuvent être utile notamment dans le cas de redux-form, mais je te laisse chercher sur internet.
+
+
+# HERE WE GOOO !!! GOOD LUCK !!!
+
